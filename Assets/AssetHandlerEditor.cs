@@ -5,6 +5,10 @@ using System.Collections;
 public class AssetHandlerEditor: EditorWindow {
 	float _wid = 0.2f;
 	float _hei = 0.2f;
+
+	float posX = 0.5f;
+	float posY = 0.5f;
+
 	string storageName = "";
 
 	public EditorAssetHandling h = new EditorAssetHandling();
@@ -16,7 +20,7 @@ public class AssetHandlerEditor: EditorWindow {
 	}
 
 	void OnGUI(){
-		Rect mainArea = new Rect(Screen.width *0.5f *(1 -_wid), Screen.height *0.5f *(1 -_hei), Screen.width *_wid, Screen.height *_hei);
+		Rect mainArea = new Rect(Screen.width *posX *(1 -_wid), Screen.height *posY *(1 -_hei), Screen.width *_wid, Screen.height *_hei);
 		GUILayout.BeginArea(mainArea);
 		{
 			if(GUILayout.Button("_")){
