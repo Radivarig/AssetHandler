@@ -3,11 +3,7 @@ using UnityEditor;
 using System.Collections;
 
 public class AssetHandlerEditor: EditorWindow {
-	float _wid = 0.2f;
-	float _hei = 0.2f;
-
-	float posX = 0.5f;
-	float posY = 0.5f;
+	Rect mainArea = new Rect(0.5f, 0.5f, 0.2f, 0.2f);
 
 	string storageName = "storage name";
 	string storagePath = "SavedStorage";
@@ -21,17 +17,23 @@ public class AssetHandlerEditor: EditorWindow {
 	}
 
 	void OnGUI(){
-		Rect mainArea = new Rect(Screen.width *posX *(1 -_wid), Screen.height *posY *(1 -_hei), Screen.width *_wid, Screen.height *_hei);
-		GUILayout.BeginArea(mainArea);
+		Rect _mainArea = new Rect(Screen.width *mainArea.x *(1 -mainArea.width), Screen.height *mainArea.y *(1 -mainArea.height), Screen.width *mainArea.width, Screen.height *mainArea.height);
+
+		GUILayout.BeginArea(_mainArea);
 		{
-			GUILayout.Label("this...Assets/");
-			storagePath = GUILayout.TextField(storagePath);
-			storageName = GUILayout.TextField(storageName);
-			if(GUILayout.Button("Create Asset")){
-				if (storageName == "") Debug.Log("Enter a name for .asset file.");
-				 h.CreateAtPathStorage(storagePath, storageName);
-			}
+			CreateAssetGUI();
 		}
 		GUILayout.EndArea();
 	}
+
+	void CreateAssetGUI(){
+		GUILayout.Label("this...Assets/");
+		storagePath = GUILayout.TextField(storagePath);
+		storageName = GUILayout.TextField(storageName);
+		if(GUILayout.Button("Create Asset")){
+			if (storageName == "") Debug.Log("Enter a name for asset file.");
+			else h.CreateAtPathStorage(storagePath, storageName);
+		}
+	}
 }
+
