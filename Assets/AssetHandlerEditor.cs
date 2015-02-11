@@ -9,10 +9,11 @@ public class AssetHandlerEditor: EditorWindow {
 	float posX = 0.5f;
 	float posY = 0.5f;
 
-	string storageName = "";
+	string storageName = "storage name";
+	string storagePath = "SavedStorage";
 
 	public EditorAssetHandling h = new EditorAssetHandling();
-
+	
 	[MenuItem ("Window/Asset Handler")]
 	static void Init () {
 		AssetHandlerEditor  editor = (AssetHandlerEditor)EditorWindow.GetWindow (typeof (AssetHandlerEditor));
@@ -23,7 +24,12 @@ public class AssetHandlerEditor: EditorWindow {
 		Rect mainArea = new Rect(Screen.width *posX *(1 -_wid), Screen.height *posY *(1 -_hei), Screen.width *_wid, Screen.height *_hei);
 		GUILayout.BeginArea(mainArea);
 		{
-			if(GUILayout.Button("_")){
+			GUILayout.Label("this...Assets/");
+			storagePath = GUILayout.TextField(storagePath);
+			storageName = GUILayout.TextField(storageName);
+			if(GUILayout.Button("Create Asset")){
+				if (storageName == "") Debug.Log("Enter a name for .asset file.");
+				 h.CreateAtPathStorage(storagePath, storageName);
 			}
 		}
 		GUILayout.EndArea();
