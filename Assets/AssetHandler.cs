@@ -1,12 +1,15 @@
 using UnityEngine;
 using UnityEditor;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.RegularExpressions;
 
 public class EditorAssetHandling {
 	public EditorAssetHandling(){}
 
 	public void CreateDirIfNonExisting(string path){
-		if(System.IO.Directory.Exists(path) ==false)
-			System.IO.Directory.CreateDirectory(path);
+		if(Directory.Exists(path) ==false)
+			Directory.CreateDirectory(path);
 	}
 
 	public bool OverwriteDialog(){
@@ -18,22 +21,26 @@ public class EditorAssetHandling {
 		return EditorUtility.DisplayDialog(title, message, ok, cancel);
 	}
 
-	public bool CreateAtPathStorage(string path, string name, bool overwrite = false){
+	public void CreateAtPathStorage(string path, string name, bool overwrite = false){
 		AssetStorage storage = ScriptableObject.CreateInstance<AssetStorage>();
 		name += ".asset";
-		string fullPath = Application.dataPath;	//"C:/../Assets/"
-		if (path != "") path = "/" +path +"/";
-		else path = "/";
-		fullPath += path;
+		path = "/" +path +"/";
+		string fullPath = Application.dataPath;	//"C:/../Assets"
+		fullPath = PurgePathOfMultiSlashes(fullPath +path);
+		
+		if( !overwrite && File.Exists(fullPath +name))
+			if(OverwriteDialog() ==false) return;
 
-		if( !overwrite && System.IO.File.Exists(fullPath +name) ){
-			if(OverwriteDialog() ==false)
-				return false;
-		}
 		CreateDirIfNonExisting(fullPath);
-
-		AssetDatabase.CreateAsset(storage, "Assets" +path +name);
+		path = PurgePathOfMultiSlashes("Assets/" +path);
+		AssetDatabase.CreateAsset(storage, path +name);
 		AssetDatabase.Refresh();
-		return true;
+	}
+
+	public string PurgePathOfMultiSlashes(string path){
+		string pattern = "\\/+";
+		string replacement = "/";
+		Regex rgx = new Regex(pattern);
+		return rgx.Replace(path, replacement);
 	}
 }
