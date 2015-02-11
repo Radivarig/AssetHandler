@@ -9,19 +9,31 @@ public class EditorAssetHandling {
 			System.IO.Directory.CreateDirectory(path);
 	}
 
-	public AssetStorage CreateAtPathStorage(string path, string name){
-		AssetStorage storage = ScriptableObject.CreateInstance<AssetStorage>();
+	public bool OverwriteDialog(){
+		string title = "File already exists.";
+		string message = "Overwrite?";
+		string ok = "ok";
+		string cancel = "nope";
 
+		return EditorUtility.DisplayDialog(title, message, ok, cancel);
+	}
+
+	public bool CreateAtPathStorage(string path, string name){
+		AssetStorage storage = ScriptableObject.CreateInstance<AssetStorage>();
+		name += ".asset";
 		string fullPath = Application.dataPath;	//"C:/../Assets/"
-		if (path != "") fullPath += "/" +path +"/";
-		else fullPath += path; 
+		if (path != "") path = "/" +path +"/";
+		else path = "/";
+		fullPath += path;
+
+		if(System.IO.File.Exists(fullPath +name)){
+			if(OverwriteDialog() ==false)
+				return false;
+		}
 		CreateDirIfNonExisting(fullPath);
 
-		string aPath = "Assets/";
-		if (path != "") aPath += path +"/" +name +".asset";
-		else aPath += name +".asset";
-		AssetDatabase.CreateAsset(storage, aPath);
+		AssetDatabase.CreateAsset(storage, "Assets" +path +name);
 		AssetDatabase.Refresh();
-		return storage;
+		return true;
 	}
 }
