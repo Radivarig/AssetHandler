@@ -18,7 +18,7 @@ public class EditorAssetHandling {
 		return EditorUtility.DisplayDialog(title, message, ok, cancel);
 	}
 
-	public bool CreateAtPathStorage(string path, string name){
+	public bool CreateAtPathStorage(string path, string name, bool overwrite = false){
 		AssetStorage storage = ScriptableObject.CreateInstance<AssetStorage>();
 		name += ".asset";
 		string fullPath = Application.dataPath;	//"C:/../Assets/"
@@ -26,7 +26,7 @@ public class EditorAssetHandling {
 		else path = "/";
 		fullPath += path;
 
-		if(System.IO.File.Exists(fullPath +name)){
+		if( !overwrite && System.IO.File.Exists(fullPath +name) ){
 			if(OverwriteDialog() ==false)
 				return false;
 		}
