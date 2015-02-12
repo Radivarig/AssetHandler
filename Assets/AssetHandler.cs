@@ -43,4 +43,19 @@ public class EditorAssetHandling {
 		Regex rgx = new Regex(pattern);
 		return rgx.Replace(path, replacement);
 	}
+
+	//TODO make this yield
+	public List<string> GetAtPathFileNames(string path, string filter = "*"){
+		FileInfo[] fileInfo = new FileInfo[0];
+		List<string> fileNames = new List<string>();
+		path = "/" +path +"/";
+		string fullPath = PurgePathOfMultiSlashes(Application.dataPath +path);
+		if(Directory.Exists(fullPath)){
+			DirectoryInfo dir = new DirectoryInfo(fullPath);
+			fileInfo = dir.GetFiles(filter);
+			foreach(FileInfo f in fileInfo)
+				fileNames.Add(f.Name);
+		}
+		return fileNames;
+	}
 }
