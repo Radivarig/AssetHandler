@@ -58,4 +58,12 @@ public class EditorAssetHandling {
 		}
 		return fileNames;
 	}
+
+	//TODO make this yield
+	public List<string> GetAtPathFileNamesFilterExt(string path, string filterExt){
+		List<string> fileNames = new List<string>();
+		foreach (string fileName in GetAtPathFileNames(path, "*." +filterExt))
+			fileNames.Add(fileName.Replace("." +filterExt, ""));
+		return fileNames;
+	}
 }
