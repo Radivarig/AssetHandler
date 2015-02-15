@@ -66,4 +66,9 @@ public class EditorAssetHandling {
 			fileNames.Add(fileName.Replace("." +filterExt, ""));
 		return fileNames;
 	}
+
+	public AssetStorage LoadAtPathStorage(string path, string name){
+		string aPath = PurgePathOfMultiSlashes("Assets/" +path +"/" +name +".asset");
+		return (AssetStorage)AssetDatabase.LoadAssetAtPath( aPath, typeof(AssetStorage));
+	}
 }
