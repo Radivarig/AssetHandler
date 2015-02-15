@@ -60,11 +60,11 @@ public class EditorAssetHandling {
 	}
 
 	//TODO make this yield
-	public List<string> GetAtPathFileNamesFilterExt(string path, string filterExt){
-		List<string> fileNames = new List<string>();
-		foreach (string fileName in GetAtPathFileNames(path, "*." +filterExt))
-			fileNames.Add(fileName.Replace("." +filterExt, ""));
-		return fileNames;
+	public List<string> ReplaceSubstringInList(List<string> list, string substring, string with){
+		List<string> resultList = new List<string>();
+		foreach (string str in list)
+			resultList.Add(str.Replace(substring, with));
+		return resultList;
 	}
 
 	public AssetStorage LoadAtPathStorage(string path, string name){
