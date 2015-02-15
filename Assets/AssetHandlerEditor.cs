@@ -3,15 +3,14 @@ using UnityEditor;
 using System.Collections;
 
 public class AssetHandlerEditor: EditorWindow {
-	Rect mainArea = new Rect(0.5f, 0.5f, 0.2f, 0.2f);
+	Rect mainArea = new Rect(0.5f, 0.2f, 0.2f, 0.2f);
 
 	Rect menuArea = new Rect(0.5f, 0.05f, 0.6f, 0.05f);
-	string[] menuItems = new string[] {"Create", "Grid 2", "Grid 3", "Grid 4"};
+	string[] menuItems = new string[] {"Create", "Select", "Grid 3", "Grid 4"};
 	public int selMenu = 0;
 
-
-	string storageName = "storage name";
-	string storagePath = "SavedStorage";
+	string storagePath = "AssetHandler";
+	string storageName = "StorageAsset";
 
 	public EditorAssetHandling h = new EditorAssetHandling();
 
@@ -33,8 +32,19 @@ public class AssetHandlerEditor: EditorWindow {
 		GUILayout.BeginArea(_mainArea);
 		{
 			if (menuItems[selMenu] == "Create") CreateAssetGUI();
+			if (menuItems[selMenu] == "Select") SelectAssetGUI();
 		}
 		GUILayout.EndArea();
+	}
+
+	void SelectAssetGUI(){
+		foreach(string fileName in h.GetAtPathFileNamesFilterExt(storagePath, "asset")){
+			if(fileName == "CurrentStorage") continue;
+			//load - set storage as current
+			if(GUILayout.Button(fileName)){
+				h.CreateAtPathStorage(storagePath, "CurrentStorage", true);
+			}
+		}
 	}
 
 	void CreateAssetGUI(){
