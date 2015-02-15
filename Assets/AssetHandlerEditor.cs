@@ -23,7 +23,7 @@ public class AssetHandlerEditor: EditorWindow {
 	}
 		
 	void OnGUI(){
-		CurrentProjectInfoGUI();
+		CurrentStorageInfoGUI();
 
 		Rect _menuArea = new Rect(Screen.width *menuArea.x *(1 -menuArea.width), Screen.height *menuArea.y *(1 -menuArea.height), Screen.width *menuArea.width, Screen.height *menuArea.height);
 		GUILayout.BeginArea(_menuArea);
@@ -65,15 +65,15 @@ public class AssetHandlerEditor: EditorWindow {
 		}
 	}
 
-	void CurrentProjectInfoGUI(){
+	void CurrentStorageInfoGUI(){
 		List<string> fileNames = h.GetAtPathFileNames(storagePath, currentPrefix +"*.asset");
-		string loadedProjectName = "no project loaded";
+		string loadedStorageName = "no storage loaded";
 		if (fileNames.Count > 0){
-			loadedProjectName = fileNames[0];
-			loadedProjectName = loadedProjectName.Replace(currentPrefix, "");
-			loadedProjectName = loadedProjectName.Replace(".asset", "");
+			loadedStorageName = fileNames[0];
+			loadedStorageName = loadedStorageName.Replace(currentPrefix, "");
+			loadedStorageName = loadedStorageName.Replace(".asset", "");
 		}
-		GUILayout.Label("Project Path: " +storagePath +"\tLoaded Project: " +loadedProjectName);
+		GUILayout.Label("Storage Path: " +storagePath +"\tLoaded Storage: " +loadedStorageName);
 	}
 }
 
