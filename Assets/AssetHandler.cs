@@ -32,8 +32,8 @@ public class EditorAssetHandling {
 			if(OverwriteDialog() ==false) return;
 
 		CreateDirIfNonExisting(fullPath);
-		path = PurgePathOfMultiSlashes("Assets/" +path);
-		AssetDatabase.CreateAsset(storage, path +name);
+		string aPath = PurgePathOfMultiSlashes("Assets/" +path +"/" +name);
+		AssetDatabase.CreateAsset(storage, aPath);
 	}
 
 	public string PurgePathOfMultiSlashes(string path){
