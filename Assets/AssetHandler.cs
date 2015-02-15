@@ -79,4 +79,9 @@ public class EditorAssetHandling {
 		string aPath = PurgePathOfMultiSlashes("Assets/" +path +"/" +name +".asset");
 		return (AssetStorage)AssetDatabase.LoadAssetAtPath( aPath, typeof(AssetStorage));
 	}
+
+	public void DeleteStorage(AssetStorage storage){
+		string path = AssetDatabase.GetAssetPath(storage);
+		AssetDatabase.DeleteAsset(path);
+	}
 }
