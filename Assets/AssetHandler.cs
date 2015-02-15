@@ -83,4 +83,16 @@ public class EditorAssetHandling {
 		string path = AssetDatabase.GetAssetPath(storage);
 		AssetDatabase.DeleteAsset(path);
 	}
+
+	public AssetStorage DuplicateStorage(AssetStorage storage, string path, string name){
+		string aPath = PurgePathOfMultiSlashes("Assets/" +path +"/" +name +".asset");
+		AssetDatabase.DeleteAsset(aPath);
+		if(storage !=null){
+			//EditorUtility.SetDirty(storage);
+			//AssetDatabase.SaveAssets();
+			AssetDatabase.CopyAsset(AssetDatabase.GetAssetPath(storage), aPath);
+		}
+		AssetDatabase.Refresh();
+		return (AssetStorage)AssetDatabase.LoadAssetAtPath(aPath, typeof(AssetStorage));
+	}
 }
