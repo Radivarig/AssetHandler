@@ -39,6 +39,7 @@ public class AssetHandlerEditor: EditorWindow {
 			if (menuItems[selMenu] == "Select") SelectAssetGUI();
 		}
 		GUILayout.EndArea();
+		this.Repaint();
 	}
 
 	void SelectAssetGUI(){
