@@ -70,11 +70,11 @@ public class EditorAssetHandling {
 		List<string> fileNames = GetAtPathFileNames(path, "*.asset");
 		foreach(string fileName in ReplaceSubstringInList(fileNames, ".asset", ""))
 			if(fileName.StartsWith(startsWith))
-				return LoadAtPathStorage(path, fileName);
+				return GetAtPathStorage(path, fileName);
 		return null;
 	}
 
-	public AssetStorage LoadAtPathStorage(string path, string name){
+	public AssetStorage GetAtPathStorage(string path, string name){
 		string aPath = PurgePathOfMultiSlashes("Assets/" +path +"/" +name +".asset");
 		return (AssetStorage)AssetDatabase.LoadAssetAtPath( aPath, typeof(AssetStorage));
 	}
