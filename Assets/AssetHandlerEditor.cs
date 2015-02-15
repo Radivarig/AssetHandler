@@ -7,7 +7,7 @@ public class AssetHandlerEditor: EditorWindow {
 	Rect mainArea = new Rect(0.5f, 0.2f, 0.2f, 0.2f);
 
 	Rect menuArea = new Rect(0.5f, 0.05f, 0.6f, 0.05f);
-	string[] menuItems = new string[] {"Create", "Select", "Grid 3", "Grid 4"};
+	string[] menuItems = new string[] {"Create", "Select", "Edit", "Grid 4"};
 	public int selMenu = 0;
 
 	string storagePath = "AssetHandler";
@@ -37,6 +37,7 @@ public class AssetHandlerEditor: EditorWindow {
 		{
 			if (menuItems[selMenu] == "Create") CreateAssetGUI();
 			if (menuItems[selMenu] == "Select") SelectAssetGUI();
+			if (menuItems[selMenu] == "Edit") EditAssetGUI();
 		}
 		GUILayout.EndArea();
 		this.Repaint();
@@ -54,7 +55,7 @@ public class AssetHandlerEditor: EditorWindow {
 			}
 		}
 	}
-
+	
 	void CreateAssetGUI(){
 		GUILayout.Label("this...Assets/");
 		storagePath = GUILayout.TextField(storagePath);
@@ -65,7 +66,15 @@ public class AssetHandlerEditor: EditorWindow {
 		}
 	}
 
-	void CurrentStorageInfoGUI(){
+	void EditAssetGUI(){
+		if(GUILayout.Button("Duplicate")){
+			AssetStorage current = h.GetAtPathStorageStartsWith(storagePath, currentPrefix);
+			string curr = GetCurrentStorageName();
+			h.DuplicateStorage(current, storagePath, curr +"_cpy");
+		}
+	}
+
+	string GetCurrentStorageName(){
 		List<string> fileNames = h.GetAtPathFileNames(storagePath, currentPrefix +"*.asset");
 		string loadedStorageName = "no storage loaded";
 		if (fileNames.Count > 0){
@@ -73,7 +82,12 @@ public class AssetHandlerEditor: EditorWindow {
 			loadedStorageName = loadedStorageName.Replace(currentPrefix, "");
 			loadedStorageName = loadedStorageName.Replace(".asset", "");
 		}
-		GUILayout.Label("Storage Path: " +storagePath +"\tLoaded Storage: " +loadedStorageName);
+		return loadedStorageName;
+	}
+
+	void CurrentStorageInfoGUI(){
+		string curr = GetCurrentStorageName();
+		GUILayout.Label("Storage Path: " +storagePath +"\tLoaded Storage: " +curr);
 	}
 }
 
