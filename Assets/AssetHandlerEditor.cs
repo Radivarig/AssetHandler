@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System.Collections;
+using System.Collections.Generic;
 
 public class AssetHandlerEditor: EditorWindow {
 	Rect mainArea = new Rect(0.5f, 0.2f, 0.2f, 0.2f);
@@ -11,6 +12,7 @@ public class AssetHandlerEditor: EditorWindow {
 
 	string storagePath = "AssetHandler";
 	string storageName = "StorageAsset";
+	string currentPrefix = "_current_";
 
 	public EditorAssetHandling h = new EditorAssetHandling();
 
@@ -19,8 +21,10 @@ public class AssetHandlerEditor: EditorWindow {
 		AssetHandlerEditor  editor = (AssetHandlerEditor)EditorWindow.GetWindow (typeof (AssetHandlerEditor));
 		editor.title = "Asset Handler";
 	}
-
+		
 	void OnGUI(){
+		CurrentProjectInfoGUI();
+
 		Rect _menuArea = new Rect(Screen.width *menuArea.x *(1 -menuArea.width), Screen.height *menuArea.y *(1 -menuArea.height), Screen.width *menuArea.width, Screen.height *menuArea.height);
 		GUILayout.BeginArea(_menuArea);
 		{
@@ -38,11 +42,14 @@ public class AssetHandlerEditor: EditorWindow {
 	}
 
 	void SelectAssetGUI(){
-		foreach(string fileName in h.GetAtPathFileNamesFilterExt(storagePath, "asset")){
-			if(fileName == "CurrentStorage") continue;
+		List<string> fileNames = h.GetAtPathFileNames(storagePath, "*.asset");
+		foreach(string fileName in h.ReplaceSubstringInList(fileNames, ".asset", "")){
+			if(fileName.StartsWith(currentPrefix)) continue;
 			//load - set storage as current
 			if(GUILayout.Button(fileName)){
-				h.CreateAtPathStorage(storagePath, "CurrentStorage", true);
+				AssetStorage currStorage = h.GetAtPathStorageStartsWith(storagePath, currentPrefix);
+				h.DeleteStorage(currStorage);
+				h.CreateAtPathStorage(storagePath, currentPrefix +fileName, true);
 			}
 		}
 	}
@@ -55,6 +62,17 @@ public class AssetHandlerEditor: EditorWindow {
 			if (storageName == "") Debug.Log("Enter a name for asset file.");
 			else h.CreateAtPathStorage(storagePath, storageName);
 		}
+	}
+
+	void CurrentProjectInfoGUI(){
+		List<string> fileNames = h.GetAtPathFileNames(storagePath, currentPrefix +"*.asset");
+		string loadedProjectName = "no project loaded";
+		if (fileNames.Count > 0){
+			loadedProjectName = fileNames[0];
+			loadedProjectName = loadedProjectName.Replace(currentPrefix, "");
+			loadedProjectName = loadedProjectName.Replace(".asset", "");
+		}
+		GUILayout.Label("Project Path: " +storagePath +"\tLoaded Project: " +loadedProjectName);
 	}
 }
 
