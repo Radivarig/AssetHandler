@@ -14,6 +14,8 @@ public class AssetHandlerEditor: EditorWindow {
 	string storageName = "StorageAsset";
 	string currentPrefix = "_current_";
 
+	Vector2 _scroll = new Vector2();
+
 	public EditorAssetHandling h = new EditorAssetHandling();
 
 	[MenuItem ("Window/Asset Handler")]
@@ -52,15 +54,19 @@ public class AssetHandlerEditor: EditorWindow {
 
 	void SelectAssetGUI(){
 		List<string> fileNames = h.GetAtPathFileNames(storagePath, "*.asset");
-		foreach(string fileName in h.ReplaceSubstringInList(fileNames, ".asset", "")){
-			if(fileName.StartsWith(currentPrefix)) continue;
-			//load - set storage as current
-			if(GUILayout.Button(fileName)){
-				AssetStorage currStorage = h.GetAtPathStorageStartsWith(storagePath, currentPrefix);
-				h.DeleteStorage(currStorage);
-				h.CreateAtPathStorage(storagePath, currentPrefix +fileName, true);
+		_scroll = GUILayout.BeginScrollView(_scroll);
+		{
+			foreach(string fileName in h.ReplaceSubstringInList(fileNames, ".asset", "")){
+				if(fileName.StartsWith(currentPrefix)) continue;
+				//load - set storage as current
+				if(GUILayout.Button(fileName)){
+					AssetStorage currStorage = h.GetAtPathStorageStartsWith(storagePath, currentPrefix);
+					h.DeleteStorage(currStorage);
+					h.CreateAtPathStorage(storagePath, currentPrefix +fileName, true);
+				}
 			}
 		}
+		GUILayout.EndScrollView();
 	}
 	
 	void CreateAssetGUI(){
