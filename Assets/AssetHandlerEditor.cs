@@ -140,8 +140,18 @@ public class AssetHandlerEditor: EditorWindow {
 		_scrollEdit = GUILayout.BeginScrollView(_scrollEdit);
 		GUILayout.BeginVertical();
 		{
-			foreach (ListItem item in current.items){
-				GUILayout.Label(item.property1);
+			foreach (ListItem item in current.items.ToArray()){
+				GUILayout.BeginHorizontal();
+				{
+					if(GUILayout.Button("x", GUILayout.Width(20f))){
+						current.items.Remove(item);
+						DestroyImmediate(item, true);
+						AssetDatabase.SaveAssets();
+						AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(current));
+					}
+					GUILayout.Label(item.property1);
+				}
+				GUILayout.EndHorizontal();
 			}
 		}
 		GUILayout.EndVertical();
