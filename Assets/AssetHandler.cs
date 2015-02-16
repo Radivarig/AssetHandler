@@ -82,6 +82,17 @@ public class EditorAssetHandling {
 		AssetDatabase.DeleteAsset(path);
 	}
 
+	public string FirstAvailableStorageName(string path, string name){
+		int counter = 0;
+		while (true){
+			counter++;
+			string incremented = name +" " +counter.ToString();
+			string fullPath = PurgePathOfMultiSlashes(Application.dataPath +"/" +path +"/" +incremented +".asset");
+			if (File.Exists(fullPath) ==false)
+				return incremented;
+		}
+	}
+
 	public AssetStorage DuplicateStorage(AssetStorage storage, string path, string name){
 		string aPath = PurgePathOfMultiSlashes("Assets/" +path +"/" +name +".asset");
 		AssetDatabase.DeleteAsset(aPath);

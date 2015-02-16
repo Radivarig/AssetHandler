@@ -97,7 +97,7 @@ public class AssetHandlerEditor: EditorWindow {
 		{
 			if(GUILayout.Button("Duplicate")){
 				string curr = GetCurrentStorageName();
-				h.DuplicateStorage(current, storagePath, curr +"_cpy");
+				h.DuplicateStorage(current, storagePath, h.FirstAvailableStorageName(storagePath, curr));
 			}
 			
 			if(GUILayout.Button("Delete")){
