@@ -90,7 +90,7 @@ public class AssetHandlerEditor: EditorWindow {
 			}
 			
 			if(GUILayout.Button("Delete")){
-				AssetStorage storage = h.GetAtPathStorage(storagePath, storageName);
+				AssetStorage storage = h.GetAtPathStorage(storagePath, GetCurrentStorageName());
 				if (storage){
 					if(EditorUtility.DisplayDialog("Delete?", "Confirm", "ok", "nope")){
 						h.DeleteStorage(h.GetAtPathStorageStartsWith(storagePath, currentPrefix));
