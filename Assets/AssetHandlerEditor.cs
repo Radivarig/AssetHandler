@@ -4,10 +4,10 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class AssetHandlerEditor: EditorWindow {
-	Rect mainArea = new Rect(0.5f, 0.2f, 0.2f, 0.2f);
+	Rect mainArea = new Rect(0.5f, 0.2f, 0.3f, 0.2f);
 
-	Rect menuArea = new Rect(0.5f, 0.05f, 0.6f, 0.05f);
-	string[] menuItems = new string[] {"Create", "Select", "Edit", "Grid 4"};
+	Rect menuArea = new Rect(0.5f, 0.05f, 0.35f, 0.15f);
+	string[] menuItems = new string[] {"Create", "Select", "Edit"};
 	public int selMenu = 0;
 
 	string storagePath = "AssetHandler";
@@ -21,14 +21,17 @@ public class AssetHandlerEditor: EditorWindow {
 		AssetHandlerEditor  editor = (AssetHandlerEditor)EditorWindow.GetWindow (typeof (AssetHandlerEditor));
 		editor.title = "Asset Handler";
 	}
-		
-	void OnGUI(){
-		CurrentStorageInfoGUI();
 
+	void OnGUI(){
+		GUI.skin.textField.alignment = TextAnchor.MiddleCenter;
+		GUI.skin.label.alignment = TextAnchor.MiddleCenter;
+		
 		Rect _menuArea = new Rect(Screen.width *menuArea.x *(1 -menuArea.width), Screen.height *menuArea.y *(1 -menuArea.height), Screen.width *menuArea.width, Screen.height *menuArea.height);
 		GUILayout.BeginArea(_menuArea);
 		{
 			selMenu = GUILayout.SelectionGrid(selMenu, menuItems, menuItems.Length);
+			storagePath = GUILayout.TextField(storagePath);
+			GUILayout.Label(GetCurrentStorageName());
 		}
 		GUILayout.EndArea();
 
@@ -57,8 +60,7 @@ public class AssetHandlerEditor: EditorWindow {
 	}
 	
 	void CreateAssetGUI(){
-		GUILayout.Label("this...Assets/");
-		storagePath = GUILayout.TextField(storagePath);
+		GUILayout.Label("Assets/" +storagePath);
 		storageName = GUILayout.TextField(storageName);
 		if(GUILayout.Button("Create Asset")){
 			if (storageName == "") Debug.Log("Enter a name for asset file.");
@@ -67,17 +69,25 @@ public class AssetHandlerEditor: EditorWindow {
 	}
 
 	void EditAssetGUI(){
-		if(GUILayout.Button("Duplicate")){
-			AssetStorage current = h.GetAtPathStorageStartsWith(storagePath, currentPrefix);
-			string curr = GetCurrentStorageName();
-			h.DuplicateStorage(current, storagePath, curr +"_cpy");
-		}
-		if(GUILayout.Button("Delete")){
-			if(EditorUtility.DisplayDialog("Delete?", "Confirm", "ok", "nope")){
-				h.DeleteStorage(h.GetAtPathStorageStartsWith(storagePath, currentPrefix));
-				h.DeleteStorage(h.GetAtPathStorage(storagePath, storageName));
+		GUILayout.BeginHorizontal();
+		{
+			if(GUILayout.Button("Duplicate")){
+				AssetStorage current = h.GetAtPathStorageStartsWith(storagePath, currentPrefix);
+				string curr = GetCurrentStorageName();
+				h.DuplicateStorage(current, storagePath, curr +"_cpy");
+			}
+			
+			if(GUILayout.Button("Delete")){
+				AssetStorage storage = h.GetAtPathStorage(storagePath, storageName);
+				if (storage){
+					if(EditorUtility.DisplayDialog("Delete?", "Confirm", "ok", "nope")){
+						h.DeleteStorage(h.GetAtPathStorageStartsWith(storagePath, currentPrefix));
+						h.DeleteStorage(storage);
+					}
+				}
 			}
 		}
+		GUILayout.EndHorizontal();
 	}
 
 	string GetCurrentStorageName(){
@@ -89,10 +99,5 @@ public class AssetHandlerEditor: EditorWindow {
 			curr = curr.Replace(".asset", "");
 		}
 		return curr;
-	}
-
-	void CurrentStorageInfoGUI(){
-		string curr = GetCurrentStorageName();
-		GUILayout.Label("Storage Path: " +storagePath +"\tLoaded Storage: " +curr);
 	}
 }
