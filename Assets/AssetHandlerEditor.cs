@@ -23,9 +23,10 @@ public class AssetHandlerEditor: EditorWindow {
 	}
 
 	void OnGUI(){
-		GUI.skin.textField.alignment = TextAnchor.MiddleCenter;
-		GUI.skin.label.alignment = TextAnchor.MiddleCenter;
-		
+		//revert this at end of ongui
+		TextAnchor tempFieldAnchor = GUI.skin.textField.alignment; GUI.skin.textField.alignment = TextAnchor.MiddleCenter;
+		TextAnchor tempLabelAnchor = GUI.skin.label.alignment; GUI.skin.label.alignment = TextAnchor.MiddleCenter;
+
 		Rect _menuArea = new Rect(Screen.width *menuArea.x *(1 -menuArea.width), Screen.height *menuArea.y *(1 -menuArea.height), Screen.width *menuArea.width, Screen.height *menuArea.height);
 		GUILayout.BeginArea(_menuArea);
 		{
@@ -43,6 +44,9 @@ public class AssetHandlerEditor: EditorWindow {
 			if (menuItems[selMenu] == "Edit") EditAssetGUI();
 		}
 		GUILayout.EndArea();
+
+		GUI.skin.textField.alignment = tempFieldAnchor;
+		GUI.skin.label.alignment = tempLabelAnchor;
 		this.Repaint();
 	}
 
