@@ -12,14 +12,6 @@ public class EditorAssetHandling {
 			Directory.CreateDirectory(path);
 	}
 
-	public bool OverwriteDialog(){
-		string title = "File already exists.";
-		string message = "Overwrite?";
-		string ok = "ok";
-		string cancel = "nope";
-
-		return EditorUtility.DisplayDialog(title, message, ok, cancel);
-	}
 
 	public void CreateAtPathStorage(string path, string name, bool overwrite = false){
 		AssetStorage storage = ScriptableObject.CreateInstance<AssetStorage>();
@@ -28,8 +20,10 @@ public class EditorAssetHandling {
 		string fullPath = Application.dataPath;	//"C:/../Assets"
 		fullPath = PurgePathOfMultiSlashes(fullPath +path);
 		
-		if( !overwrite && File.Exists(fullPath +name))
-			if(OverwriteDialog() ==false) return;
+		if( !overwrite && File.Exists(fullPath +name)){
+			bool overwriteDialog = EditorUtility.DisplayDialog("File already exists.", "Overwrite?", "ok", "nope");
+			if(overwriteDialog ==false) return;
+		}
 
 		CreateDirIfNonExisting(fullPath);
 		string aPath = PurgePathOfMultiSlashes("Assets/" +path +"/" +name);
