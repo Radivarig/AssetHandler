@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ListItem : MonoBehaviour {
+public class ListItem : ScriptableObject {
 	public string property1 = "property1 from base";
 }
