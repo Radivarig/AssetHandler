@@ -12,6 +12,10 @@ public class EditorAssetHandling {
 			Directory.CreateDirectory(path);
 	}
 
+	public void AddObjectToStorage(Object objectToAdd, AssetStorage storage){
+		AssetDatabase.AddObjectToAsset(objectToAdd, storage);
+		AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(storage));
+	}
 
 	public void CreateAtPathStorage(string path, string name, bool overwrite = false){
 		AssetStorage storage = ScriptableObject.CreateInstance<AssetStorage>();
