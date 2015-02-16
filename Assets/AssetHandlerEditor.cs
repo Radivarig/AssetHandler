@@ -72,6 +72,12 @@ public class AssetHandlerEditor: EditorWindow {
 			string curr = GetCurrentStorageName();
 			h.DuplicateStorage(current, storagePath, curr +"_cpy");
 		}
+		if(GUILayout.Button("Delete")){
+			if(EditorUtility.DisplayDialog("Delete?", "Confirm", "ok", "nope")){
+				h.DeleteStorage(h.GetAtPathStorageStartsWith(storagePath, currentPrefix));
+				h.DeleteStorage(h.GetAtPathStorage(storagePath, storageName));
+			}
+		}
 	}
 
 	string GetCurrentStorageName(){
@@ -90,4 +96,3 @@ public class AssetHandlerEditor: EditorWindow {
 		GUILayout.Label("Storage Path: " +storagePath +"\tLoaded Storage: " +curr);
 	}
 }
-
