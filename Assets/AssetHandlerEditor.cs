@@ -56,7 +56,9 @@ public class AssetHandlerEditor: EditorWindow {
 		List<string> fileNames = h.GetAtPathFileNames(storagePath, "*.asset");
 		_scroll = GUILayout.BeginScrollView(_scroll);
 		{
-			foreach(string fileName in h.ReplaceSubstringInList(fileNames, ".asset", "")){
+			fileNames = h.ReplaceSubstringInList(fileNames, ".asset", "");
+			fileNames.Sort();
+			foreach(string fileName in fileNames){
 				if(fileName.StartsWith(currentPrefix)) continue;
 				//load - set storage as current
 				if(GUILayout.Button(fileName)){
