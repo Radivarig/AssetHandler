@@ -86,8 +86,8 @@ public class EditorAssetHandling {
 		string aPath = PurgePathOfMultiSlashes("Assets/" +path +"/" +name +".asset");
 		AssetDatabase.DeleteAsset(aPath);
 		if(storage !=null){
-			//EditorUtility.SetDirty(storage);
-			//AssetDatabase.SaveAssets();
+			EditorUtility.SetDirty(storage);
+			AssetDatabase.SaveAssets();
 			AssetDatabase.CopyAsset(AssetDatabase.GetAssetPath(storage), aPath);
 		}
 		AssetDatabase.Refresh();
