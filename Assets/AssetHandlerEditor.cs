@@ -82,13 +82,13 @@ public class AssetHandlerEditor: EditorWindow {
 
 	string GetCurrentStorageName(){
 		List<string> fileNames = h.GetAtPathFileNames(storagePath, currentPrefix +"*.asset");
-		string loadedStorageName = "no storage loaded";
+		string curr = "no storage loaded";
 		if (fileNames.Count > 0){
-			loadedStorageName = fileNames[0];
-			loadedStorageName = loadedStorageName.Replace(currentPrefix, "");
-			loadedStorageName = loadedStorageName.Replace(".asset", "");
+			curr = fileNames[0];
+			curr = curr.Replace(currentPrefix, "");
+			curr = curr.Replace(".asset", "");
 		}
-		return loadedStorageName;
+		return curr;
 	}
 
 	void CurrentStorageInfoGUI(){
