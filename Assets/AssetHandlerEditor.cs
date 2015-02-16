@@ -52,7 +52,7 @@ public class AssetHandlerEditor: EditorWindow {
 
 		GUI.skin.textField.alignment = tempFieldAnchor;
 		GUI.skin.label.alignment = tempLabelAnchor;
-		//this.Repaint();
+		this.Repaint();
 	}
 
 	void SelectAssetGUI(){
@@ -72,9 +72,10 @@ public class AssetHandlerEditor: EditorWindow {
 	}
 
 	void SelectStorage(string storageName){
-		AssetStorage currStorage = h.GetAtPathStorageStartsWith(storagePath, currentPrefix);
-		h.DeleteStorage(currStorage);
-		h.CreateAtPathStorage(storagePath, currentPrefix +storageName, true);
+		AssetStorage current = h.GetAtPathStorageStartsWith(storagePath, currentPrefix);
+		AssetStorage storage = h.GetAtPathStorage(storagePath, storageName);
+		h.DeleteStorage(current);
+		h.DuplicateStorage(storage, storagePath, currentPrefix +storageName);
 	}
 
 	void CreateAssetGUI(){
@@ -112,12 +113,11 @@ public class AssetHandlerEditor: EditorWindow {
 
 		GUILayout.BeginHorizontal();
 		{
-			if(GUILayout.Button("Apply")){
-			}
+			if(GUILayout.Button("Apply"))
+				h.DuplicateStorage(current, storagePath, GetCurrentStorageName());
 
-			if(GUILayout.Button("Revert")){
+			if(GUILayout.Button("Revert"))
 				SelectStorage(GetCurrentStorageName());
-			}
 		}
 		GUILayout.EndHorizontal();
 		GUILayout.Label("Add new:");
