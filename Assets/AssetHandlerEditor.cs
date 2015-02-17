@@ -26,6 +26,7 @@ public class AssetHandlerEditor: EditorWindow {
 	void OnGUI(){
 		//revert this at end of ongui
 		TextAnchor tempFieldAnchor = GUI.skin.textField.alignment; GUI.skin.textField.alignment = TextAnchor.MiddleCenter;
+		GUI.skin = (GUISkin)Resources.Load("aa", typeof(GUISkin));
 
 		float _x = Screen.width *(mainArea.x -mainArea.width*0.5f);
 		float _y = Screen.height *(mainArea.y -mainArea.height*0.5f);
@@ -67,11 +68,10 @@ public class AssetHandlerEditor: EditorWindow {
 		{
 			fileNames = h.ReplaceSubstringInList(fileNames, ".asset", "");
 			fileNames.Sort();
-
 			foreach(string fileName in fileNames){
-				GUIStyleState buttonState = GUI.skin.button.normal;
+				Texture2D buttonTexture = GUI.skin.button.normal.background;
 				if (fileName == GetCurrentStorageName())
-					GUI.skin.button.normal = GUI.skin.button.active;
+					GUI.skin.button.normal.background = GUI.skin.button.onNormal.background;
 
 				if(fileName.StartsWith(currentPrefix)) continue;
 				//load - set storage as current
@@ -79,7 +79,7 @@ public class AssetHandlerEditor: EditorWindow {
 				if(GUILayout.Button(fileName))
 					SelectStorage(fileName);
 
-				GUI.skin.button.normal = buttonState;
+				GUI.skin.button.normal.background = buttonTexture;
 			}
 		}
 		GUILayout.EndScrollView();
