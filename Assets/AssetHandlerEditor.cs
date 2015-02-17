@@ -4,9 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class AssetHandlerEditor: EditorWindow {
-	Rect mainArea = new Rect(0.5f, 0.5f, 0.3f, 0.6f);
-
-	Rect menuArea = new Rect(0.5f, 0.05f, 0.35f, 0.15f);
+	Rect mainArea = new Rect(0.5f, 0.5f, 0.3f, 0.7f);
 	string[] menuItems = new string[] {"Create", "Select", "Edit"};
 	public int selMenu = 0;
 
@@ -28,22 +26,31 @@ public class AssetHandlerEditor: EditorWindow {
 	void OnGUI(){
 		//revert this at end of ongui
 		TextAnchor tempFieldAnchor = GUI.skin.textField.alignment; GUI.skin.textField.alignment = TextAnchor.MiddleCenter;
-		TextAnchor tempLabelAnchor = GUI.skin.label.alignment; GUI.skin.label.alignment = TextAnchor.MiddleCenter;
 
-		Rect _menuArea = new Rect(Screen.width *menuArea.x *(1 -menuArea.width), Screen.height *menuArea.y *(1 -menuArea.height), Screen.width *menuArea.width, Screen.height *menuArea.height);
-		GUI.Box(_menuArea, "");
-		GUILayout.BeginArea(_menuArea);
-		{
-			selMenu = GUILayout.SelectionGrid(selMenu, menuItems, menuItems.Length);
-			storagePath = GUILayout.TextField(storagePath);
-			GUILayout.Label(GetCurrentStorageName());
-		}
-		GUILayout.EndArea();
-
-		Rect _mainArea = new Rect(Screen.width *mainArea.x *(1 -mainArea.width), Screen.height *mainArea.y *(1 -mainArea.height), Screen.width *mainArea.width, Screen.height *mainArea.height);
+		float _x = Screen.width *(mainArea.x -mainArea.width*0.5f);
+		float _y = Screen.height *(mainArea.y -mainArea.height*0.5f);
+		float _w = Screen.width *mainArea.width;
+		float _h = Screen.height *mainArea.height;
+		Rect _mainArea = new Rect(_x, _y, _w, _h);
 		GUI.Box(_mainArea, "");
 		GUILayout.BeginArea(_mainArea);
 		{
+			EditorGUILayout.BeginHorizontal();
+			{
+				GUILayout.Label("Folder", GUILayout.Width(50f));
+				storagePath = GUILayout.TextField(storagePath);
+			}
+			EditorGUILayout.EndHorizontal();
+
+			EditorGUILayout.BeginHorizontal();
+			{
+				GUILayout.Label("Selected");
+				GUILayout.Label(GetCurrentStorageName());
+			}
+			EditorGUILayout.EndHorizontal();
+
+			selMenu = GUILayout.SelectionGrid(selMenu, menuItems, menuItems.Length);
+
 			if (menuItems[selMenu] == "Create") CreateAssetGUI();
 			if (menuItems[selMenu] == "Select") SelectAssetGUI();
 			if (menuItems[selMenu] == "Edit") EditAssetGUI();
@@ -51,7 +58,6 @@ public class AssetHandlerEditor: EditorWindow {
 		GUILayout.EndArea();
 
 		GUI.skin.textField.alignment = tempFieldAnchor;
-		GUI.skin.label.alignment = tempLabelAnchor;
 		this.Repaint();
 	}
 
@@ -79,12 +85,14 @@ public class AssetHandlerEditor: EditorWindow {
 	}
 
 	void CreateAssetGUI(){
+		GUILayout.BeginScrollView(Vector2.zero);
 		GUILayout.Label("Assets/" +storagePath);
 		storageName = GUILayout.TextField(storageName);
 		if(GUILayout.Button("Create Asset")){
 			if (storageName == "") Debug.Log("Enter a name for asset file.");
 			else h.CreateAtPathStorage(storagePath, storageName);
 		}
+		GUILayout.EndScrollView();
 	}
 
 	void EditAssetGUI(){
