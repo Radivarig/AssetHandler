@@ -26,7 +26,7 @@ public class AssetHandlerEditor: EditorWindow {
 	void OnGUI(){
 		//revert this at end of ongui
 		TextAnchor tempFieldAnchor = GUI.skin.textField.alignment; GUI.skin.textField.alignment = TextAnchor.MiddleCenter;
-		GUI.skin = (GUISkin)Resources.Load("aa", typeof(GUISkin));
+		GUI.skin = (GUISkin)Resources.Load("DefaultGUISkin", typeof(GUISkin));
 
 		float _x = Screen.width *(mainArea.x -mainArea.width*0.5f);
 		float _y = Screen.height *(mainArea.y -mainArea.height*0.5f);
