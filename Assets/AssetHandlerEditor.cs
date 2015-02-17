@@ -67,11 +67,19 @@ public class AssetHandlerEditor: EditorWindow {
 		{
 			fileNames = h.ReplaceSubstringInList(fileNames, ".asset", "");
 			fileNames.Sort();
+
 			foreach(string fileName in fileNames){
+				GUIStyleState buttonState = GUI.skin.button.normal;
+				if (fileName == GetCurrentStorageName())
+					GUI.skin.button.normal = GUI.skin.button.active;
+
 				if(fileName.StartsWith(currentPrefix)) continue;
 				//load - set storage as current
+				
 				if(GUILayout.Button(fileName))
 					SelectStorage(fileName);
+
+				GUI.skin.button.normal = buttonState;
 			}
 		}
 		GUILayout.EndScrollView();
