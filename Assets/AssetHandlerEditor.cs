@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class AssetHandlerEditor: EditorWindow {
-	Rect mainArea = new Rect(0.5f, 0.5f, 0.3f, 0.7f);
 	string[] menuItems = new string[] {"Create", "Select", "Edit"};
 	public int selMenu = 0;
 
@@ -29,6 +28,7 @@ public class AssetHandlerEditor: EditorWindow {
 		GUI.skin = (GUISkin)Resources.Load("DefaultGUISkin", typeof(GUISkin));
 
 		/*
+		Rect mainArea = new Rect(0.5f, 0.5f, 0.3f, 0.7f);
 		float _x = Screen.width *(mainArea.x -mainArea.width*0.5f);
 		float _y = Screen.height *(mainArea.y -mainArea.height*0.5f);
 		float _w = Screen.width *mainArea.width;
