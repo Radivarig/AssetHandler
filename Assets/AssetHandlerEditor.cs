@@ -28,13 +28,17 @@ public class AssetHandlerEditor: EditorWindow {
 		TextAnchor tempFieldAnchor = GUI.skin.textField.alignment; GUI.skin.textField.alignment = TextAnchor.MiddleCenter;
 		GUI.skin = (GUISkin)Resources.Load("DefaultGUISkin", typeof(GUISkin));
 
+		/*
 		float _x = Screen.width *(mainArea.x -mainArea.width*0.5f);
 		float _y = Screen.height *(mainArea.y -mainArea.height*0.5f);
 		float _w = Screen.width *mainArea.width;
 		float _h = Screen.height *mainArea.height;
 		Rect _mainArea = new Rect(_x, _y, _w, _h);
+
 		GUI.Box(_mainArea, "");
 		GUILayout.BeginArea(_mainArea);
+		*/
+		GUI.Box(new Rect(0f, 0f, Screen.width, Screen.height), "");
 		{
 			EditorGUILayout.BeginHorizontal();
 			{
@@ -56,7 +60,7 @@ public class AssetHandlerEditor: EditorWindow {
 			if (menuItems[selMenu] == "Select") SelectAssetGUI();
 			if (menuItems[selMenu] == "Edit") EditAssetGUI();
 		}
-		GUILayout.EndArea();
+		//GUILayout.EndArea();
 
 		GUI.skin.textField.alignment = tempFieldAnchor;
 		this.Repaint();
